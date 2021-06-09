@@ -12,6 +12,12 @@
 # below:
 .git
 .gitignore
+src
+lib
+.vscode
+tsconfig.debug.json
+yarn.lock
+tsoa.json
 
 # Node.js dependencies:
 node_modules/
