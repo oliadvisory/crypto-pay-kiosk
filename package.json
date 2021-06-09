@@ -6,7 +6,8 @@
   "main": "build/src/server.js",
   "scripts": {
     "build": "tsoa spec-and-routes && tsc --outDir build",
-    "start": "node build/server.js"
+    "start": "node build/server.js",
+    "deploy": "npm run build && gcloud app deploy"
   },
   "dependencies": {
     "body-parser": "^1.19.0",

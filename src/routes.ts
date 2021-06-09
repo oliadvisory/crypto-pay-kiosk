@@ -19,6 +19,25 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "CoinbaseWebhookTimeline": {
+        "dataType": "refObject",
+        "properties": {
+            "time": {"dataType":"string","required":true},
+            "status": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "CoinbaseWebhook": {
+        "dataType": "refObject",
+        "properties": {
+            "id": {"dataType":"string","required":true},
+            "scheduled_for": {"dataType":"string","required":true},
+            "event": {"dataType":"nestedObjectLiteral","nestedProperties":{"data":{"dataType":"nestedObjectLiteral","nestedProperties":{"addresses":{"dataType":"nestedObjectLiteral","nestedProperties":{"ethereum":{"dataType":"string","required":true},"bitcoin":{"dataType":"string","required":true}},"required":true},"payments":{"dataType":"array","array":{"dataType":"any"},"required":true},"pricing_type":{"dataType":"string","required":true},"metadata":{"dataType":"nestedObjectLiteral","nestedProperties":{},"required":true},"timeline":{"dataType":"array","array":{"dataType":"refObject","ref":"CoinbaseWebhookTimeline"},"required":true},"expires_at":{"dataType":"string","required":true},"created_at":{"dataType":"string","required":true},"hosted_url":{"dataType":"string","required":true},"description":{"dataType":"string","required":true},"name":{"dataType":"string","required":true},"code":{"dataType":"string","required":true}},"required":true},"created_at":{"dataType":"string","required":true},"api_version":{"dataType":"string","required":true},"type":{"dataType":"string","required":true},"resource":{"dataType":"string","required":true},"id":{"dataType":"string","required":true}},"required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "User": {
         "dataType": "refObject",
         "properties": {
@@ -69,6 +88,28 @@ export function RegisterRoutes(app: express.Router) {
 
 
             const promise = controller.getUser.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, undefined, next);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/coinbase/webhook',
+            function coinbaseController_webhook(request: any, response: any, next: any) {
+            const args = {
+                    body: {"in":"body","name":"body","required":true,"ref":"CoinbaseWebhook"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new coinbaseController();
+
+
+            const promise = controller.webhook.apply(controller, validatedArgs as any);
             promiseHandler(controller, promise, response, undefined, next);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa

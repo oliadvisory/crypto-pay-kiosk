@@ -18,6 +18,135 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"CoinbaseWebhookTimeline": {
+				"properties": {
+					"time": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"time",
+					"status"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"CoinbaseWebhook": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"scheduled_for": {
+						"type": "string"
+					},
+					"event": {
+						"properties": {
+							"data": {
+								"properties": {
+									"addresses": {
+										"properties": {
+											"ethereum": {
+												"type": "string"
+											},
+											"bitcoin": {
+												"type": "string"
+											}
+										},
+										"required": [
+											"ethereum",
+											"bitcoin"
+										],
+										"type": "object"
+									},
+									"payments": {
+										"items": {},
+										"type": "array"
+									},
+									"pricing_type": {
+										"type": "string"
+									},
+									"metadata": {
+										"properties": {},
+										"type": "object"
+									},
+									"timeline": {
+										"items": {
+											"$ref": "#/components/schemas/CoinbaseWebhookTimeline"
+										},
+										"type": "array"
+									},
+									"expires_at": {
+										"type": "string"
+									},
+									"created_at": {
+										"type": "string"
+									},
+									"hosted_url": {
+										"type": "string"
+									},
+									"description": {
+										"type": "string"
+									},
+									"name": {
+										"type": "string"
+									},
+									"code": {
+										"type": "string"
+									}
+								},
+								"required": [
+									"addresses",
+									"payments",
+									"pricing_type",
+									"metadata",
+									"timeline",
+									"expires_at",
+									"created_at",
+									"hosted_url",
+									"description",
+									"name",
+									"code"
+								],
+								"type": "object"
+							},
+							"created_at": {
+								"type": "string"
+							},
+							"api_version": {
+								"type": "string"
+							},
+							"type": {
+								"type": "string"
+							},
+							"resource": {
+								"type": "string"
+							},
+							"id": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"data",
+							"created_at",
+							"api_version",
+							"type",
+							"resource",
+							"id"
+						],
+						"type": "object"
+					}
+				},
+				"required": [
+					"id",
+					"scheduled_for",
+					"event"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"User": {
 				"properties": {
 					"id": {
@@ -112,6 +241,28 @@
 				},
 				"security": [],
 				"parameters": []
+			}
+		},
+		"/coinbase/webhook": {
+			"post": {
+				"operationId": "Webhook",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CoinbaseWebhook"
+							}
+						}
+					}
+				}
 			}
 		},
 		"/users/{userId}": {
