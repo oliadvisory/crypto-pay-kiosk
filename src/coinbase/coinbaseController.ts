@@ -9,11 +9,14 @@ export class coinbaseController extends Controller {
     return new CoinbaseService().get("hello from coinbase controller");
   }
   @Post("webhook")
-  public async webhook(@Body() body: CoinbaseWebhook | any) {
-    if(body.id === '00000000-0000-0000-0000-000000000000'){
-      console.log('===== Test Transaction Detected =====');
+  public async webhook(
+    @Body() body: CoinbaseWebhook
+    | any
+  ) {
+    if (body.id === "00000000-0000-0000-0000-000000000000") {
+      console.log("===== Test Transaction Detected =====");
     }
-    console.log(JSON.stringify(body));
+    console.log(body);
     this.setStatus(201); // set return status 201
     return;
   }

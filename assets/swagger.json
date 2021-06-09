@@ -37,6 +37,9 @@
 			"CoinbaseWebhook": {
 				"properties": {
 					"id": {
+						"type": "string"
+					},
+					"attempt_number": {
 						"type": "number",
 						"format": "double"
 					},
@@ -142,6 +145,7 @@
 				},
 				"required": [
 					"id",
+					"attempt_number",
 					"scheduled_for",
 					"event"
 				],
@@ -260,10 +264,10 @@
 						"application/json": {
 							"schema": {
 								"anyOf": [
-									{},
 									{
 										"$ref": "#/components/schemas/CoinbaseWebhook"
-									}
+									},
+									{}
 								]
 							}
 						}

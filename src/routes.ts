@@ -31,7 +31,8 @@ const models: TsoaRoute.Models = {
     "CoinbaseWebhook": {
         "dataType": "refObject",
         "properties": {
-            "id": {"dataType":"double","required":true},
+            "id": {"dataType":"string","required":true},
+            "attempt_number": {"dataType":"double","required":true},
             "scheduled_for": {"dataType":"string","required":true},
             "event": {"dataType":"nestedObjectLiteral","nestedProperties":{"data":{"dataType":"nestedObjectLiteral","nestedProperties":{"addresses":{"dataType":"nestedObjectLiteral","nestedProperties":{"ethereum":{"dataType":"string","required":true},"bitcoin":{"dataType":"string","required":true}},"required":true},"payments":{"dataType":"array","array":{"dataType":"any"},"required":true},"pricing_type":{"dataType":"string","required":true},"metadata":{"dataType":"nestedObjectLiteral","nestedProperties":{},"required":true},"timeline":{"dataType":"array","array":{"dataType":"refObject","ref":"CoinbaseWebhookTimeline"},"required":true},"expires_at":{"dataType":"string","required":true},"created_at":{"dataType":"string","required":true},"hosted_url":{"dataType":"string","required":true},"description":{"dataType":"string","required":true},"name":{"dataType":"string","required":true},"code":{"dataType":"string","required":true}},"required":true},"created_at":{"dataType":"string","required":true},"api_version":{"dataType":"string","required":true},"type":{"dataType":"string","required":true},"resource":{"dataType":"string","required":true},"id":{"dataType":"string","required":true}},"required":true},
         },
@@ -94,7 +95,7 @@ export function RegisterRoutes(app: express.Router) {
         app.post('/coinbase/webhook',
             function coinbaseController_webhook(request: any, response: any, next: any) {
             const args = {
-                    body: {"in":"body","name":"body","required":true,"dataType":"union","subSchemas":[{"dataType":"any"},{"ref":"CoinbaseWebhook"}]},
+                    body: {"in":"body","name":"body","required":true,"dataType":"union","subSchemas":[{"ref":"CoinbaseWebhook"},{"dataType":"any"}]},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa

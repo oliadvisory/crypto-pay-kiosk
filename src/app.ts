@@ -1,15 +1,18 @@
-import express from "express";
-import bodyParser from "body-parser";
 import { RegisterRoutes } from "./routes";
+import { customResponseHandler } from "./middleware/response";
+import { Config } from "./config";
 
-export const app = express();
+class App {
+  private config: Config;
+  constructor() {
+    const config = new Config();
+    RegisterRoutes(config.app);
+    customResponseHandler(config.app);
+    this.config = config;
+  }
+  init() {
+    return this.config.app;
+  }
+}
 
-// Use body parser to read sent json payloads
-app.use(
-  bodyParser.urlencoded({
-    extended: true,
-  })
-);
-app.use(bodyParser.json());
-
-RegisterRoutes(app);
+export const app = new App().init();
