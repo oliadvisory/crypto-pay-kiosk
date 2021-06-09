@@ -8,7 +8,7 @@
     "tsoa": "tsoa spec-and-routes",
     "build": "npm run tsoa && tsc --outDir build",
     "debug": "npm run tsoa && tsc --outDir lib --project tsconfig.debug.json",
-    "start": "npm run build && node build/server.js",
+    "start": "node build/server.js",
     "deploy": "npm run build && gcloud app deploy"
   },
   "dependencies": {

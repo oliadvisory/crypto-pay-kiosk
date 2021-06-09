@@ -259,7 +259,12 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/CoinbaseWebhook"
+								"anyOf": [
+									{},
+									{
+										"$ref": "#/components/schemas/CoinbaseWebhook"
+									}
+								]
 							}
 						}
 					}

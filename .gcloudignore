@@ -16,6 +16,7 @@ src
 lib
 .vscode
 tsconfig.debug.json
+tsconfig.json
 yarn.lock
 tsoa.json
 

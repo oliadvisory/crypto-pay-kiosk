@@ -9,7 +9,7 @@ export class coinbaseController extends Controller {
     return new CoinbaseService().get("hello from coinbase controller");
   }
   @Post("webhook")
-  public async webhook(@Body() body: CoinbaseWebhook) {
+  public async webhook(@Body() body: any | CoinbaseWebhook) {
     console.log(body);
     this.setStatus(201); // set return status 201
     return;
