@@ -37,7 +37,8 @@
 			"CoinbaseWebhook": {
 				"properties": {
 					"id": {
-						"type": "string"
+						"type": "number",
+						"format": "double"
 					},
 					"scheduled_for": {
 						"type": "string"
@@ -224,9 +225,9 @@
 	},
 	"openapi": "3.0.0",
 	"paths": {
-		"/coinbase/test": {
+		"/coinbase/ping": {
 			"get": {
-				"operationId": "GetUser",
+				"operationId": "Ping",
 				"responses": {
 					"200": {
 						"description": "Ok",

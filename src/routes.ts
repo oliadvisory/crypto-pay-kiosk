@@ -31,7 +31,7 @@ const models: TsoaRoute.Models = {
     "CoinbaseWebhook": {
         "dataType": "refObject",
         "properties": {
-            "id": {"dataType":"string","required":true},
+            "id": {"dataType":"double","required":true},
             "scheduled_for": {"dataType":"string","required":true},
             "event": {"dataType":"nestedObjectLiteral","nestedProperties":{"data":{"dataType":"nestedObjectLiteral","nestedProperties":{"addresses":{"dataType":"nestedObjectLiteral","nestedProperties":{"ethereum":{"dataType":"string","required":true},"bitcoin":{"dataType":"string","required":true}},"required":true},"payments":{"dataType":"array","array":{"dataType":"any"},"required":true},"pricing_type":{"dataType":"string","required":true},"metadata":{"dataType":"nestedObjectLiteral","nestedProperties":{},"required":true},"timeline":{"dataType":"array","array":{"dataType":"refObject","ref":"CoinbaseWebhookTimeline"},"required":true},"expires_at":{"dataType":"string","required":true},"created_at":{"dataType":"string","required":true},"hosted_url":{"dataType":"string","required":true},"description":{"dataType":"string","required":true},"name":{"dataType":"string","required":true},"code":{"dataType":"string","required":true}},"required":true},"created_at":{"dataType":"string","required":true},"api_version":{"dataType":"string","required":true},"type":{"dataType":"string","required":true},"resource":{"dataType":"string","required":true},"id":{"dataType":"string","required":true}},"required":true},
         },
@@ -70,8 +70,8 @@ export function RegisterRoutes(app: express.Router) {
     //  NOTE: If you do not see routes for all of your controllers in this file, then you might not have informed tsoa of where to look
     //      Please look into the "controllerPathGlobs" config option described in the readme: https://github.com/lukeautry/tsoa
     // ###########################################################################################################
-        app.get('/coinbase/test',
-            function coinbaseController_getUser(request: any, response: any, next: any) {
+        app.get('/coinbase/ping',
+            function coinbaseController_ping(request: any, response: any, next: any) {
             const args = {
             };
 
@@ -87,7 +87,7 @@ export function RegisterRoutes(app: express.Router) {
             const controller = new coinbaseController();
 
 
-            const promise = controller.getUser.apply(controller, validatedArgs as any);
+            const promise = controller.ping.apply(controller, validatedArgs as any);
             promiseHandler(controller, promise, response, undefined, next);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa

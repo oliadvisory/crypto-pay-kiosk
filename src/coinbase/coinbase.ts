@@ -8,7 +8,7 @@ interface CoinbaseWebhookTimeline {
 }
 
 export interface CoinbaseWebhook {
-  id: string; // 1,
+  id: number; // 1,
   scheduled_for: string; // "2017-01-31T20:50:02Z",
   event: {
     id: string; // "24934862-d980-46cb-9402-43c81b0cdba6",

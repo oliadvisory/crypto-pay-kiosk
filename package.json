@@ -5,8 +5,10 @@
   "license": "MIT",
   "main": "build/src/server.js",
   "scripts": {
-    "build": "tsoa spec-and-routes && tsc --outDir build",
-    "start": "node build/server.js",
+    "tsoa": "tsoa spec-and-routes",
+    "build": "npm run tsoa && tsc --outDir build",
+    "debug": "npm run tsoa && tsc --outDir lib --project tsconfig.debug.json",
+    "start": "npm run build && node build/server.js",
     "deploy": "npm run build && gcloud app deploy"
   },
   "dependencies": {

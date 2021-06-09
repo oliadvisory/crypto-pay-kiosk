@@ -1,20 +1,11 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Path,
-  Post,
-  Query,
-  Route,
-  SuccessResponse,
-} from "tsoa";
+import { Body, Controller, Get, Post, Route } from "tsoa";
 import { CoinbaseTest, CoinbaseWebhook } from "./coinbase";
-import { CoinbaseService, CoinbaseTestParams } from "./coinbaseService";
+import { CoinbaseService } from "./coinbaseService";
 
 @Route("coinbase")
 export class coinbaseController extends Controller {
-  @Get("test")
-  public async getUser(): Promise<CoinbaseTest> {
+  @Get("ping")
+  public async ping(): Promise<CoinbaseTest> {
     return new CoinbaseService().get("hello from coinbase controller");
   }
   @Post("webhook")
