@@ -1,14 +1,16 @@
 import * as express from "express";
+import { IncomingHttpHeaders } from "http";
 
-interface Request extends express.Request {
+interface IHeaders extends IncomingHttpHeaders {
+  'x-auth': string
+  'x-cc-webhook-signature': string
+}
+export interface IRequest extends express.Request {
   uid: string;
-  res: Response
+  res: IResponse;
+  rawBody: string;
+  headers: IHeaders
 }
-interface Response extends express.Response {
+export interface IResponse extends express.Response {
   // something custom ...
-}
-
-export interface Http {
-  Request: Request;
-  Response: Response;
 }

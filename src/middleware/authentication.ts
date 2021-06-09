@@ -3,7 +3,7 @@
 
 import * as _ from "lodash";
 import admin from "firebase-admin";
-import { Request } from "../http";
+import { IRequest } from "../http";
 import { AuthenticationError } from "../err";
 
 // import { IEnv, IGlobal } from "../env";
@@ -14,7 +14,7 @@ import { AuthenticationError } from "../err";
 // declare var global: IGlobal;
 
 export async function expressAuthentication(
-  request: Request,
+  request: IRequest,
   securityName: string,
   scopes?: string[]
 ): Promise<{}> {

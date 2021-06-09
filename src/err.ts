@@ -28,8 +28,8 @@ class BaseError extends Error {
 
   constructor(
     public message: string,
-    public data?: any,
-    public kind?: "auth" | "unexpected" | string
+    public kind?: "auth" | "unexpected" | string,
+    public data?: any
   ) {
     super(message);
 
@@ -60,7 +60,7 @@ class BaseError extends Error {
 }
 
 export class CommonError extends BaseError {
-  constructor(message: string, data?: any, kind?: string) {
+  constructor(message: string, kind?: string, data?: any) {
     super(message, data, kind);
     // do something...
     return this;

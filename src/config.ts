@@ -1,56 +1,57 @@
-import cors from 'cors'
-import express from 'express'
-import { IEnv } from './env'
-const helmet = require('helmet')
-import * as bodyParser from 'body-parser'
-import _ from 'lodash'
-import admin from 'firebase-admin'
+import cors from "cors";
+import express from "express";
+import { IEnv } from "./env";
+const helmet = require("helmet");
+// import * as bodyParser from "body-parser";
+import _ from "lodash";
+import admin from "firebase-admin";
+import { IRequest } from "./http";
 
 declare var process: {
-  env: IEnv
-}
+  env: IEnv;
+};
 
 export class Config {
-  app: express.Application
-  private allowedOrigins: string[]
-  build: 'prod' | 'dev'
+  app: express.Application;
+  private allowedOrigins: string[];
+  build: "prod" | "dev";
 
   constructor() {
     // init express app
-    this.app = express()
+    this.app = express();
 
-    this.build = process.env.build as 'prod' | 'dev'
+    this.build = process.env.build as "prod" | "dev";
 
     // set origins
-    this.setEnv()
+    this.setEnv();
+
+    this.app.use(this.rawBody);
 
     // set cors for specified origins
     // enable selective origins:
     // this.app.use(this.setCorsConfig())
     // enable all origins:
-    this.app.use(cors())
+    this.app.use(cors());
 
     // initialize managed services
-    this.startServices()
+    this.startServices();
 
-    // parse application/x-www-form-urlencoded
-    this.app.use(bodyParser.urlencoded({ extended: false }))
+    // // parse application/x-www-form-urlencoded
+    // this.app.use(bodyParser.urlencoded({ extended: false }));
 
-    // parse application/json
-    this.app.use(bodyParser.json())
-    
+    // // parse application/json
+    // this.app.use(bodyParser.json());
+
     // init arr
-    this.allowedOrigins = []
+    this.allowedOrigins = [];
   }
 
   private async startServices() {
     this.app.use(async (req, res, next) => {
-      
-
-      const firebaseInitialized = _.get(global, 'initialized_firebase', false)
+      const firebaseInitialized = _.get(global, "initialized_firebase", false);
       if (!firebaseInitialized) {
         // update global value denoting that firebase is initialized
-        _.set(global, 'initialized_firebase', true)
+        _.set(global, "initialized_firebase", true);
 
         // initialize firebase app
         // https://cloud.google.com/docs/authentication/production#providing_credentials_to_your_application
@@ -60,49 +61,71 @@ export class Config {
         admin.initializeApp({
           credential: admin.credential.applicationDefault(),
           databaseURL: process.env.firebase_database_url,
-        })
+        });
       }
 
-      next()
-    })
+      next();
+    });
   }
 
   private setEnv() {
     // setup configs based on build target
-    if (process.env.build === 'dev') {
+    if (process.env.build === "dev") {
       // Development configurations
-      this.devConfig()
+      this.devConfig();
     } else {
       // Production configurations
-      this.prodConfig()
+      this.prodConfig();
     }
+  }
+
+  private rawBody(
+    req: IRequest | any,
+    res: express.Response,
+    next: express.NextFunction
+  ) {
+    req.setEncoding("utf8");
+
+    var data = "";
+
+    req.on("data", function (chunk: any) {
+      data += chunk;
+    });
+
+    req.on("end", function () {
+      req.rawBody = data;
+      next();
+    });
   }
 
   private prodConfig() {
     // set basic security related middleware
     // https://expressjs.com/en/advanced/best-practice-security.html
-    this.app.use(helmet())
+    this.app.use(helmet());
 
     // view logs to ensure proper deployment
-    console.info('===> Running PRODUCTION Configuration <===')
+    console.info("===> Running PRODUCTION Configuration <===");
 
     // cors domains to allow
-    this.allowedOrigins = [process.env.portal_url, process.env.portal_url + '/']
+    this.allowedOrigins = [
+      process.env.portal_url,
+      process.env.portal_url + "/",
+    ];
 
     this.app.use((req, res, next) => {
-      const allowedOrigins = this.allowedOrigins
-      const origin = req.headers.origin as string
+      const allowedOrigins = this.allowedOrigins;
+      const origin = req.headers.origin as string;
       if (allowedOrigins.indexOf(origin) > -1) {
-        res.setHeader('Access-Control-Allow-Origin', origin)
+        res.setHeader("Access-Control-Allow-Origin", origin);
       }
       res.header(
-        'Access-Control-Allow-Methods',
-        'GET, PUT, POST, OPTIONS, DELETE'
-      )
-      res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization')
-      res.header('Access-Control-Allow-Credentials', 'true')
-      return next()
-    })
+        "Access-Control-Allow-Methods",
+        "GET, PUT, POST, OPTIONS, DELETE"
+      );
+      res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+      res.header("Access-Control-Allow-Credentials", "true");
+      return next();
+    });
   }
 
   private devConfig() {
@@ -111,45 +134,45 @@ export class Config {
         helmet({
           hsts: false,
         })
-      )
+      );
 
       // view logs to ensure proper deployment
-      console.info('===> Running DEVELOPMENT Configuration <===')
+      console.info("===> Running DEVELOPMENT Configuration <===");
 
       // not a production build, so add testing domains to cors
       this.allowedOrigins = [
         // angular app request
-        'http://localhost:4200',
-        'http://localhost:4200/',
+        "http://localhost:4200",
+        "http://localhost:4200/",
 
         // express app
-        'http://localhost:3000',
-        'http://localhost:3000/',
+        "http://localhost:3000",
+        "http://localhost:3000/",
 
         // google cloud function emulator
-        'http://localhost:8010',
-        'http://localhost:8010/',
-      ]
+        "http://localhost:8010",
+        "http://localhost:8010/",
+      ];
 
       this.app.use((req, res, next) => {
-        const allowedOrigins = this.allowedOrigins
-        const origin = req.headers.origin as string
+        const allowedOrigins = this.allowedOrigins;
+        const origin = req.headers.origin as string;
         if (allowedOrigins.indexOf(origin) > -1) {
-          res.setHeader('Access-Control-Allow-Origin', origin)
+          res.setHeader("Access-Control-Allow-Origin", origin);
         }
         res.header(
-          'Access-Control-Allow-Methods',
-          'GET, PUT, POST, OPTIONS, DELETE'
-        )
+          "Access-Control-Allow-Methods",
+          "GET, PUT, POST, OPTIONS, DELETE"
+        );
         res.header(
-          'Access-Control-Allow-Headers',
-          'Content-Type, Authorization'
-        )
-        res.header('Access-Control-Allow-Credentials', 'true')
-        return next()
-      })
+          "Access-Control-Allow-Headers",
+          "Content-Type, Authorization"
+        );
+        res.header("Access-Control-Allow-Credentials", "true");
+        return next();
+      });
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
   }
 

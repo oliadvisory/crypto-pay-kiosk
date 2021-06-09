@@ -1,23 +1,30 @@
-import { Body, Controller, Get, Post, Route } from "tsoa";
-import { CoinbaseTest, CoinbaseWebhook } from "./coinbase";
+import {  Controller, Post, Route, Request } from "tsoa";
+import { IRequest } from "../http";
+// import { CoinbaseWebhook } from "./coinbase";
 import { CoinbaseService } from "./coinbaseService";
 
 @Route("coinbase")
 export class coinbaseController extends Controller {
-  @Get("ping")
-  public async ping(): Promise<CoinbaseTest> {
-    return new CoinbaseService().get("hello from coinbase controller");
-  }
+  private coinbase = new CoinbaseService();
+
   @Post("webhook")
   public async webhook(
-    @Body() body: CoinbaseWebhook
-    | any
+    // @Body() body: CoinbaseWebhook | any,
+    @Request() request: IRequest
   ) {
-    if (body.id === "00000000-0000-0000-0000-000000000000") {
-      console.log("===== Test Transaction Detected =====");
+    const authenticated = this.coinbase.verifySignature(request);
+
+    if (authenticated) {
+      // if (body.id === "00000000-0000-0000-0000-000000000000") {
+      //   console.log("===== Test Transaction Detected =====");
+      // }
+
+      // console.log(body);
+      this.setStatus(201); // set return status 201
+      return;
+    } else {
+      this.setStatus(401);
+      return;
     }
-    console.log(body);
-    this.setStatus(201); // set return status 201
-    return;
   }
 }
