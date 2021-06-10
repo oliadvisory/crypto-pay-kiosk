@@ -2,7 +2,7 @@ import cors from "cors";
 import express from "express";
 import { IEnv } from "./env";
 const helmet = require("helmet");
-// import * as bodyParser from "body-parser";
+import * as bodyParser from "body-parser";
 import _ from "lodash";
 import admin from "firebase-admin";
 import { IRequest } from "./http";
@@ -26,7 +26,7 @@ export class Config {
     // set origins
     this.setEnv();
 
-    this.app.use(this.rawBody);
+    // this.app.use(this.rawBody);
 
     // set cors for specified origins
     // enable selective origins:
@@ -37,14 +37,29 @@ export class Config {
     // initialize managed services
     this.startServices();
 
-    // // parse application/x-www-form-urlencoded
-    // this.app.use(bodyParser.urlencoded({ extended: false }));
+    // parse application/x-www-form-urlencoded
+    this.app.use(bodyParser.urlencoded({ extended: false }));
 
-    // // parse application/json
-    // this.app.use(bodyParser.json());
+    // parse application/json
+    this.app.use(
+      bodyParser.json({
+        verify: this.rawBody,
+      })
+    );
 
     // init arr
     this.allowedOrigins = [];
+  }
+
+  private rawBody(
+    req: IRequest | any,
+    res: express.Response,
+    buf: Buffer,
+    encoding: string
+  ) {
+    if (buf && buf.length) {
+      req.rawBody = buf.toString("utf8");
+    }
   }
 
   private async loadSecrets() {
@@ -97,25 +112,6 @@ export class Config {
       // Production configurations
       this.prodConfig();
     }
-  }
-
-  private rawBody(
-    req: IRequest | any,
-    res: express.Response,
-    next: express.NextFunction
-  ) {
-    req.setEncoding("utf8");
-
-    var data = "";
-
-    req.on("data", function (chunk: any) {
-      data += chunk;
-    });
-
-    req.on("end", function () {
-      req.rawBody = data;
-      next();
-    });
   }
 
   private prodConfig() {
