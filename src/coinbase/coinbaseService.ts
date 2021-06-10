@@ -1,6 +1,6 @@
 import * as coinbase from "coinbase-commerce-node";
 import moment from "moment";
-import { Carwash } from "../carwash/carwash";
+import { Carwash } from "../kiosk/kiosk";
 import { IEnv } from "../env";
 import { CommonError } from "../err";
 
