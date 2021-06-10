@@ -91,8 +91,20 @@
 						"description": "No content"
 					}
 				},
-				"security": [],
-				"parameters": []
+				"security": [
+					{
+						"coinbase-webhook": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {}
+						}
+					}
+				}
 			}
 		},
 		"/system/ping": {
@@ -111,6 +123,29 @@
 					}
 				},
 				"security": [],
+				"parameters": []
+			}
+		},
+		"/system/fake": {
+			"get": {
+				"operationId": "TestAuth",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"auth-test": []
+					}
+				],
 				"parameters": []
 			}
 		},

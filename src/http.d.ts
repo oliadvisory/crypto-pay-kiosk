@@ -3,6 +3,7 @@ import { IncomingHttpHeaders } from "http";
 
 interface IHeaders extends IncomingHttpHeaders {
   'x-auth': string
+  'x-auth-test': string
   'x-cc-webhook-signature': string
 }
 export interface IRequest extends express.Request {

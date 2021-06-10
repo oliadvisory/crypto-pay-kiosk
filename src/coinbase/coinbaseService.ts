@@ -1,7 +1,6 @@
 import * as coinbase from "coinbase-commerce-node";
 import { IEnv } from "../env";
 import { CommonError } from "../err";
-import { IRequest } from "../http";
 
 declare var process: {
   env: IEnv;
@@ -18,27 +17,11 @@ export class CoinbaseService {
     }
   }
 
-  verifySignature(request: IRequest) {
-    console.log("trying to verify....");
-    const webhook = coinbase.Webhook;
-    try {
-      const sharedSecret = process.env.coinbase_commerce_webhook_secret;
-      webhook.verifySigHeader(
-        request.rawBody,
-        request.headers["x-cc-webhook-signature"],
-        sharedSecret
-      );
-      console.log("verified success!");
-
-      return true;
-    } catch (error) {
-      console.log("verification failure");
-      new CommonError(
-        "failed to verify coinbase webhook signature",
-        "coinbase"
-      );
-      console.log(error);
-      return false;
+  handleEvent(event: coinbase.EventResource) {
+    if (event.type === "charge:pending") {
+      console.log('is a charge:pending');
+    } else{
+      console.log('is a charge:pending');
     }
   }
 }
