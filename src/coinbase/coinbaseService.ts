@@ -1,6 +1,6 @@
 import * as coinbase from "coinbase-commerce-node";
 import moment from "moment";
-import { Carwash } from "../kiosk/kiosk";
+import { Payment } from "../payment/payment";
 import { IEnv } from "../env";
 import { CommonError } from "../err";
 
@@ -10,10 +10,10 @@ declare var process: {
 
 export class CoinbaseService {
   private client = coinbase.Client;
-  private carwash: Carwash;
+  private carwash: Payment;
 
   constructor() {
-    this.carwash = new Carwash();
+    this.carwash = new Payment();
     if (process.env.coinbase_commerce_api_key) {
       this.client.init(process.env.coinbase_commerce_api_key);
     } else {

@@ -4,7 +4,8 @@ import moment from "moment";
 export interface IPayment {
   kind: "cash" | "crypto" | "card";
   usd: number;
-  bay: 1 | 2 | 3 | 4 | 5;
+  // id that indicates details regarding the purchased item
+  checkoutId: string;
   receivedAt: number;
   crypto?: {
     id: string;
