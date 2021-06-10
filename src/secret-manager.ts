@@ -32,6 +32,7 @@ export async function fetchSecrets() {
       // // see secrets from /env.d.ts ISecrets
       "coinbase_commerce_api_key",
       "coinbase_commerce_webhook_secret",
+      "api_key"
     ];
 
     for (const i of names) {

@@ -63,9 +63,18 @@ export class Config {
   }
 
   private async loadSecrets() {
+    // // get container secrets from secret manager
+    // if (!secretsLoaded && process.env.build === "prod") {
+    //   // update global value denoting that secrets are loaded
+    //   _.set(global, "secrets_loaded", true);
+
+    //   // load secrets from secret manager
+    //   await fetchSecrets();
+    // }
+
     const secretsLoaded = _.get(global, "secrets_loaded", false);
     // get container secrets from secret manager
-    if (!secretsLoaded && process.env.build === "prod") {
+    if (!secretsLoaded) {
       // update global value denoting that secrets are loaded
       _.set(global, "secrets_loaded", true);
 

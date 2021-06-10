@@ -1,5 +1,6 @@
 import _ from "lodash";
-import { Database, IPayment } from "../db/context";
+import { Database } from "../db/context";
+import { IPayment } from "./payment";
 
 export class Payment {
   private db: Database;

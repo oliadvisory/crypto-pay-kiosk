@@ -6,66 +6,21 @@
 		"requestBodies": {},
 		"responses": {},
 		"schemas": {
-			"User": {
-				"properties": {
-					"id": {
-						"type": "number",
-						"format": "double"
-					},
-					"email": {
-						"type": "string"
-					},
-					"name": {
-						"type": "string"
-					},
-					"status": {
-						"type": "string",
-						"enum": [
-							"Happy",
-							"Sad"
-						]
-					},
-					"phoneNumbers": {
-						"items": {
-							"type": "string"
-						},
-						"type": "array"
-					}
-				},
-				"required": [
-					"id",
-					"email",
-					"name",
-					"phoneNumbers"
-				],
+			"IPricingObj": {
+				"properties": {},
 				"type": "object",
-				"additionalProperties": false
-			},
-			"Pick_User.email-or-name-or-phoneNumbers_": {
-				"properties": {
-					"email": {
-						"type": "string"
+				"additionalProperties": {
+					"properties": {
+						"min": {
+							"type": "number",
+							"format": "double"
+						}
 					},
-					"name": {
-						"type": "string"
-					},
-					"phoneNumbers": {
-						"items": {
-							"type": "string"
-						},
-						"type": "array"
-					}
-				},
-				"required": [
-					"email",
-					"name",
-					"phoneNumbers"
-				],
-				"type": "object",
-				"description": "From T, pick a set of properties whose keys are in the union K"
-			},
-			"UserCreationParams": {
-				"$ref": "#/components/schemas/Pick_User.email-or-name-or-phoneNumbers_"
+					"required": [
+						"min"
+					],
+					"type": "object"
+				}
 			}
 		},
 		"securitySchemes": {}
@@ -86,26 +41,6 @@
 		"/coinbase/webhook": {
 			"post": {
 				"operationId": "Webhook",
-				"responses": {
-					"204": {
-						"description": "No content"
-					}
-				},
-				"security": [],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {}
-						}
-					}
-				}
-			}
-		},
-		"/coinbase/dummy": {
-			"post": {
-				"operationId": "Dummy",
 				"responses": {
 					"204": {
 						"description": "No content"
@@ -169,16 +104,59 @@
 				"parameters": []
 			}
 		},
-		"/users/{userId}": {
+		"/time/price": {
+			"post": {
+				"operationId": "SetPrice",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [
+					{
+						"api-key": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IPricingObj"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/time/price/{checkoutId}/{duration}": {
 			"get": {
-				"operationId": "GetUser",
+				"operationId": "GetPrice",
 				"responses": {
 					"200": {
 						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/User"
+									"properties": {
+										"price": {
+											"type": "number",
+											"format": "double"
+										},
+										"duration": {
+											"type": "string"
+										},
+										"checkoutId": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"price",
+										"duration",
+										"checkoutId"
+									],
+									"type": "object"
 								}
 							}
 						}
@@ -188,44 +166,25 @@
 				"parameters": [
 					{
 						"in": "path",
-						"name": "userId",
+						"name": "checkoutId",
 						"required": true,
-						"schema": {
-							"format": "double",
-							"type": "number"
-						}
-					},
-					{
-						"in": "query",
-						"name": "name",
-						"required": false,
 						"schema": {
 							"type": "string"
 						}
-					}
-				]
-			}
-		},
-		"/users": {
-			"post": {
-				"operationId": "CreateUser",
-				"responses": {
-					"201": {
-						"description": "Created"
-					}
-				},
-				"security": [],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/UserCreationParams"
-							}
+					},
+					{
+						"in": "path",
+						"name": "duration",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"enum": [
+								"min",
+								"sec"
+							]
 						}
 					}
-				}
+				]
 			}
 		}
 	},

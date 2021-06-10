@@ -1,6 +1,6 @@
 import * as coinbase from "coinbase-commerce-node";
 import moment from "moment";
-import { Payment } from "../payment/payment";
+import { Payment } from "../payment/paymentService";
 import { IEnv } from "../env";
 import { CommonError } from "../err";
 

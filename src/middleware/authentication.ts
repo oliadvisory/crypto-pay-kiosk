@@ -6,6 +6,7 @@ import { IRequest } from "../http";
 import { AuthenticationError } from "../err";
 import { testAuth } from "./security/example-auth";
 import { verifySignature } from "./security/coinbase-webhook";
+import { apiKey } from "./security/api-key";
 
 // import { IEnv, IGlobal } from "../env";
 // declare var process: {
@@ -25,6 +26,10 @@ export async function expressAuthentication(
 
   if (securityName === "coinbase-webhook") {
     return verifySignature(request);
+  }
+
+  if (securityName === "api-key") {
+    return await apiKey(request);
   }
 
   // default response to reject if not previously resolved
