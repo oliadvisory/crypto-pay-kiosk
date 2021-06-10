@@ -1,5 +1,4 @@
-import { Controller, Post, Route, Request, Security, Body } from "tsoa";
-import { IRequest } from "../http";
+import { Controller, Post, Route, Security, Body } from "tsoa";
 import { CoinbaseService } from "./coinbaseService";
 import * as coinbase from "coinbase-commerce-node";
 
@@ -9,13 +8,17 @@ export class coinbaseController extends Controller {
 
   @Post("webhook")
   @Security("coinbase-webhook")
-  public async webhook(
-    @Body() body: any,
-    @Request() request: IRequest
-  ) {
-    const event: coinbase.EventResource = body
-    this.coinbase.handleEvent(event);
+  public async webhook(@Body() body: any) {
+    const event: coinbase.EventResource<coinbase.ChargeResource> = body;
+    await this.coinbase.handleEvent(event);
     this.setStatus(201);
     return;
   }
+
+  // @Post("dummy")
+  // @Security("coinbase-webhook")
+  // public async dummy(@Body() body: any) {
+  //   this.setStatus(201);
+  //   return;
+  // }
 }
