@@ -9,9 +9,10 @@
     "build": "npm run tsoa && tsc --outDir build",
     "debug": "npm run tsoa && tsc --outDir lib --project tsconfig.debug.json",
     "start": "node build/server.js",
-    "deploy": "npm run build && gcloud app deploy"
+    "deploy": "npm run build && gcloud app deploy --quiet"
   },
   "dependencies": {
+    "@google-cloud/secret-manager": "^3.7.1",
     "body-parser": "^1.19.0",
     "coinbase-commerce-node": "^1.0.4",
     "cors": "^2.8.5",

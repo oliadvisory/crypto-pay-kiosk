@@ -16,7 +16,9 @@ export interface IEnv extends ISecrets, IDevSecrets {
   // used by tests
   cicd: "local" | "githubaction";
 
-  gcp_project_number: string;
+  // see https://cloud.google.com/appengine/docs/standard/nodejs/runtime#environment_variables
+  // for default GCP env vars
+  gcp_project_number: string; 
 
   GOOGLE_APPLICATION_CREDENTIALS: string;
   firebase_database_url: string;

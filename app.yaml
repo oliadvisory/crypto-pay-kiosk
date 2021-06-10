@@ -1,4 +1,7 @@
 runtime: nodejs14
+env_variables:
+  gcp_project_number: "820026586317"
+  build: prod
 handlers:
 - url: /assets
   static_dir: assets

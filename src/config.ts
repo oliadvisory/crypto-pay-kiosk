@@ -6,6 +6,7 @@ const helmet = require("helmet");
 import _ from "lodash";
 import admin from "firebase-admin";
 import { IRequest } from "./http";
+import { fetchSecrets } from "./secret-manager";
 
 declare var process: {
   env: IEnv;
@@ -46,8 +47,27 @@ export class Config {
     this.allowedOrigins = [];
   }
 
+  private async loadSecrets() {
+    const secretsLoaded = _.get(global, "secrets_loaded", false);
+    // get container secrets from secret manager
+    if (!secretsLoaded && process.env.build === "prod") {
+      // update global value denoting that secrets are loaded
+      _.set(global, "secrets_loaded", true);
+
+      // load secrets from secret manager
+      await fetchSecrets();
+    }
+  }
+
   private async startServices() {
     this.app.use(async (req, res, next) => {
+      // async Secret loading (eg: load secrets and start db) after first request in middleware
+      // this way we only get the secrets when needed after runtime
+      // NOTE: we don't retrieve at run time because if we did we
+      // would slow the cold start time and slow the build since the
+      // app would have to wait to get secrets before booting up completely
+      await this.loadSecrets();
+
       const firebaseInitialized = _.get(global, "initialized_firebase", false);
       if (!firebaseInitialized) {
         // update global value denoting that firebase is initialized
