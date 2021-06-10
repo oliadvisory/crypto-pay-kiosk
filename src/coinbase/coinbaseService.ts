@@ -21,7 +21,7 @@ export class CoinbaseService {
     if (event.type === "charge:pending") {
       console.log('is a charge:pending');
     } else{
-      console.log('is a charge:pending');
+      console.log('is another event');
     }
   }
 }
