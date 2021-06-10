@@ -10,7 +10,10 @@
       "name": "debug",
       "program": "${workspaceFolder}/src/server.ts",
       "preLaunchTask": "npm: debug",
-      "outFiles": ["${workspaceFolder}/lib/**/*.js"]
+      "outFiles": ["${workspaceFolder}/lib/**/*.js"],
+      "env": {
+        "build":"dev"
+      }
     }
   ]
 }
