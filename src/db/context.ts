@@ -33,9 +33,11 @@ export interface IWashCycle {
 
 export class Database {
   private db: admin.database.Database;
+
   constructor() {
     this.db = admin.database();
   }
+
   async getBayForCryptoCheckout(
     checkoutId: string
   ): Promise<1 | 2 | 3 | 4 | 5> {
@@ -44,6 +46,7 @@ export class Database {
     ).val() as any;
     return bay;
   }
+
   async recordPayment(payment: IPayment): Promise<void> {
     try {
       await this.db.ref(`payment`).push(payment);
@@ -53,7 +56,7 @@ export class Database {
     return;
   }
 
-  async lastWashTime(
+  async getLastWashTime(
     bay: number
   ): Promise<{ [timestamp: string]: IWashCycle }> {
     const ref = this.db.ref(`wash/${bay}`);

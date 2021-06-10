@@ -65,7 +65,7 @@ export class Carwash {
     const addSeconds = time.m * 60 + time.s;
 
     // query the last end time
-    const lastRecord = await this.db.lastWashTime(bay);
+    const lastRecord = await this.db.getLastWashTime(bay);
 
     let lastEnd = 0;
     if (lastRecord) {
