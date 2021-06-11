@@ -10,10 +10,10 @@ declare var process: {
 
 export class CoinbaseService {
   private client = coinbase.Client;
-  private carwash: Payment;
+  private payment: Payment;
 
   constructor() {
-    this.carwash = new Payment();
+    this.payment = new Payment();
     if (process.env.coinbase_commerce_api_key) {
       this.client.init(process.env.coinbase_commerce_api_key);
     } else {
@@ -36,7 +36,7 @@ export class CoinbaseService {
       const now = Number(moment().format("x"));
 
       // save the payment event (which will trigger the carwash)
-      await this.carwash.paymentCrypto(usd, checkout, now, {
+      await this.payment.paymentCrypto(usd, checkout, now, {
         id: event.data.id,
         asset: currency,
         amount,

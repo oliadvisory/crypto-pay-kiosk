@@ -84,32 +84,23 @@ export class Config {
   }
 
   private async startServices() {
-    this.app.use(async (req, res, next) => {
-      // async Secret loading (eg: load secrets and start db) after first request in middleware
-      // this way we only get the secrets when needed after runtime
-      // NOTE: we don't retrieve at run time because if we did we
-      // would slow the cold start time and slow the build since the
-      // app would have to wait to get secrets before booting up completely
-      await this.loadSecrets();
+    await this.loadSecrets();
 
-      const firebaseInitialized = _.get(global, "initialized_firebase", false);
-      if (!firebaseInitialized) {
-        // update global value denoting that firebase is initialized
-        _.set(global, "initialized_firebase", true);
+    const firebaseInitialized = _.get(global, "initialized_firebase", false);
+    if (!firebaseInitialized) {
+      // update global value denoting that firebase is initialized
+      _.set(global, "initialized_firebase", true);
 
-        // initialize firebase app
-        // https://cloud.google.com/docs/authentication/production#providing_credentials_to_your_application
-        // https://firebase.google.com/docs/admin/setup#add_firebase_to_your_app
-        // console.log(process.env.GOOGLE_APPLICATION_CREDENTIALS)
+      // initialize firebase app
+      // https://cloud.google.com/docs/authentication/production#providing_credentials_to_your_application
+      // https://firebase.google.com/docs/admin/setup#add_firebase_to_your_app
+      // console.log(process.env.GOOGLE_APPLICATION_CREDENTIALS)
 
-        admin.initializeApp({
-          credential: admin.credential.applicationDefault(),
-          databaseURL: process.env.firebase_database_url,
-        });
-      }
-
-      next();
-    });
+      admin.initializeApp({
+        credential: admin.credential.applicationDefault(),
+        databaseURL: process.env.firebase_database_url,
+      });
+    }
   }
 
   private setEnv() {

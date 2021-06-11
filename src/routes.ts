@@ -14,7 +14,7 @@ import * as express from 'express';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
 const models: TsoaRoute.Models = {
-    "IPricingObj": {
+    "ITimePricingObj": {
         "dataType": "refObject",
         "properties": {
         },
@@ -32,7 +32,6 @@ export function RegisterRoutes(app: express.Router) {
     //      Please look into the "controllerPathGlobs" config option described in the readme: https://github.com/lukeautry/tsoa
     // ###########################################################################################################
         app.post('/coinbase/webhook',
-            authenticateMiddleware([{"coinbase-webhook":[]}]),
             function coinbaseController_webhook(request: any, response: any, next: any) {
             const args = {
                     body: {"in":"body","name":"body","required":true,"dataType":"any"},
@@ -51,6 +50,29 @@ export function RegisterRoutes(app: express.Router) {
 
 
             const promise = controller.webhook.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, undefined, next);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/coinbase/dummy',
+            authenticateMiddleware([{"coinbase-webhook":[]}]),
+            function coinbaseController_dummy(request: any, response: any, next: any) {
+            const args = {
+                    body: {"in":"body","name":"body","required":true,"dataType":"any"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new coinbaseController();
+
+
+            const promise = controller.dummy.apply(controller, validatedArgs as any);
             promiseHandler(controller, promise, response, undefined, next);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -101,7 +123,7 @@ export function RegisterRoutes(app: express.Router) {
             authenticateMiddleware([{"api-key":[]}]),
             function TimeController_setPrice(request: any, response: any, next: any) {
             const args = {
-                    body: {"in":"body","name":"body","required":true,"ref":"IPricingObj"},
+                    body: {"in":"body","name":"body","required":true,"ref":"ITimePricingObj"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa

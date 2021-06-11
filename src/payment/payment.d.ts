@@ -9,4 +9,5 @@ export interface IPayment {
     asset: string;
     amount: number;
   };
+  processing?: number | string
 }

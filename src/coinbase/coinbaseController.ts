@@ -7,7 +7,7 @@ export class coinbaseController extends Controller {
   private coinbase = new CoinbaseService();
 
   @Post("webhook")
-  @Security("coinbase-webhook")
+  // @Security("coinbase-webhook")
   public async webhook(@Body() body: any) {
     const event: coinbase.EventResource<coinbase.ChargeResource> = body;
     await this.coinbase.handleEvent(event);
@@ -15,10 +15,10 @@ export class coinbaseController extends Controller {
     return;
   }
 
-  // @Post("dummy")
-  // @Security("coinbase-webhook")
-  // public async dummy(@Body() body: any) {
-  //   this.setStatus(201);
-  //   return;
-  // }
+  @Post("dummy")
+  @Security("coinbase-webhook")
+  public async dummy(@Body() body: any) {
+    this.setStatus(201);
+    return;
+  }
 }

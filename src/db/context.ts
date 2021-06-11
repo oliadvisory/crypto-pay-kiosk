@@ -1,4 +1,5 @@
 import * as admin from "firebase-admin";
+import _ from "lodash";
 import { IPayment } from "../payment/payment";
 import { ITimePricingGet, ITimePricingObj } from "../time/time";
 
@@ -12,6 +13,10 @@ export class Database {
   }
 
   async recordPayment(payment: IPayment): Promise<void> {
+    // "processing" used to indicates that payment was created,
+    // downstream kiosks can now watch an update this number by 
+    // incrementing it to mark the payment as received and completed.
+    _.set(payment, "processing", 'pending'); 
     try {
       await this.db.ref(`payment`).push(payment);
     } catch (error) {

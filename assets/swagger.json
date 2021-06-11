@@ -6,7 +6,7 @@
 		"requestBodies": {},
 		"responses": {},
 		"schemas": {
-			"IPricingObj": {
+			"ITimePricingObj": {
 				"properties": {},
 				"type": "object",
 				"additionalProperties": {
@@ -41,6 +41,26 @@
 		"/coinbase/webhook": {
 			"post": {
 				"operationId": "Webhook",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {}
+						}
+					}
+				}
+			}
+		},
+		"/coinbase/dummy": {
+			"post": {
+				"operationId": "Dummy",
 				"responses": {
 					"204": {
 						"description": "No content"
@@ -123,7 +143,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/IPricingObj"
+								"$ref": "#/components/schemas/ITimePricingObj"
 							}
 						}
 					}
